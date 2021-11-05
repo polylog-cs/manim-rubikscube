@@ -1,3 +1,4 @@
+from manim.constants import PI
 from manim.utils.color import *
 from manim.mobject.mobject import Mobject
 from manim.mobject.types.vectorized_mobject import VMobject
@@ -7,11 +8,10 @@ from kociemba import solver as sv
 
 
 class RubiksCube(VMobject):
-    # If facing the Rubik's Cube, X goes Front to Back, Y goes Right to Left, Z goes Down to Up
     # Each coordinate starts at 0 and goes to (Dimensions - 1)
 
     # Colors are in the order Up, Right, Front, Down, Left, Back
-    def __init__(self, dim=3, colors=None, x_offset=2.1, y_offset=2.1, z_offset=2.1):
+    def __init__(self, dim=3, colors=None, cubie_size=1.0):
         if not (dim >= 2):
             raise Exception("Dimension must be >= 2")
 
@@ -22,21 +22,25 @@ class RubiksCube(VMobject):
 
         self.dimensions = dim
         self.colors = colors
-        self.x_offset = [[Mobject.shift, [x_offset, 0, 0]]]
-        self.y_offset = [[Mobject.shift, [0, y_offset, 0]]]
-        self.z_offset = [[Mobject.shift, [0, 0, z_offset]]]
-
+        self.cubie_size = cubie_size
         self.cubies = np.ndarray((dim, dim, dim), dtype=Cubie)
         self.generate_cubies()
+
+        # Center around the origin
+        self.shift(-self.cubie_size * (self.dim - 1) / 2)
+
+        # Rotate so that under the default camera, F is really the front etc.
+        self.rotate(axis=np.array([0, 0, 1]), angle=PI / 2)
+        self.rotate(axis=np.array([1, 0, 0]), angle=-PI / 2)
 
     def generate_cubies(self):
         for x in range(self.dimensions):
             for y in range(self.dimensions):
                 for z in range(self.dimensions):
-                    cubie = Cubie(x, y, z, self.dimensions, self.colors)
-                    self.transform_cubie(x, self.x_offset, cubie)
-                    self.transform_cubie(y, self.y_offset, cubie)
-                    self.transform_cubie(z, self.z_offset, cubie)
+                    cubie = Cubie(
+                        x, y, z, self.dimensions, self.colors, self.cubie_size
+                    )
+                    cubie.shift(np.array((x, y, z), dtype=float) * self.cubie_size)
                     self.add(cubie)
                     self.cubies[x, y, z] = cubie
 
@@ -74,21 +78,6 @@ class RubiksCube(VMobject):
 
     def solve_by_kociemba(self, state):
         return sv.solve(state).replace("3", "'").replace("1", "").split()
-
-    def transform_cubie(self, position, offset, tile):
-        offsets_nr = len(offset)
-        for i in range(offsets_nr):
-            for j in range(int(len(offset[i]) / 2)):
-                if position < 0:
-                    magnitude = len(range(-i, position, -offsets_nr)) * -1
-                    offset[-1 - i][0 + j * 2](
-                        tile, magnitude * np.array(offset[-1 - i][1 + j * 2])
-                    )
-                else:
-                    magnitude = len(range(i, position, offsets_nr))
-                    offset[i][0 + j * 2](
-                        tile, magnitude * np.array(offset[i][1 + j * 2])
-                    )
 
     def get_face_slice(self, face):
         """
