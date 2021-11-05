@@ -32,8 +32,8 @@ class CubeMove(Animation):
         self.mobject.become(self.starting_mobject)
         
         VGroup(*self.mobject.get_face(self.face[0])).rotate(
-            -alpha * (PI / 2) * self.n_turns,
-            self.axis
+            -self.rate_func(alpha) * (PI / 2) * self.n_turns,
+            self.axis,
         )
 
     def finish(self):
