@@ -37,9 +37,7 @@ class Cubie(VGroup):
         ).tolist()
         i = 0
         for vect in OUT, DOWN, LEFT, IN, UP, RIGHT:
-            face = Square(
-                side_length=self.size, shade_in_3d=True, stroke_width=3
-            )
+            face = Square(side_length=self.size, shade_in_3d=True, stroke_width=3)
             if vect.tolist() in faces:
                 face.set_fill(self.colors[i], 1)
             else:

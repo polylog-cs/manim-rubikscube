@@ -2,29 +2,32 @@ from manim.constants import *
 
 
 def get_type_of_cubie(dim, position):
-    if (position[1] == 0 or position[1] == dim-1) and (position[2] == 0 or position[2] == dim-1):
+    if (position[1] == 0 or position[1] == dim - 1) and (
+        position[2] == 0 or position[2] == dim - 1
+    ):
         return "corner"
-    elif position[1] == 0 or position[1] == dim-1:
+    elif position[1] == 0 or position[1] == dim - 1:
         return "edge"
     else:
         return "center"
 
-#DOWN = IN
-#OUT = RIGHT
-#LEFT = UP
-#UP = OUT
-#RIGHT = DOWN
-#IN = LEFT
+
+# DOWN = IN
+# OUT = RIGHT
+# LEFT = UP
+# UP = OUT
+# RIGHT = DOWN
+# IN = LEFT
 def get_faces_of_cubie(dim, position):
-    dim = dim-1
+    dim = dim - 1
     try:
         faces = {
-            #Front corners
+            # Front corners
             (0, 0, 0): [LEFT, DOWN, IN],
             (0, 0, dim): [LEFT, DOWN, OUT],
             (0, dim, 0): [LEFT, UP, IN],
             (0, dim, dim): [LEFT, UP, OUT],
-            #Back corners
+            # Back corners
             (dim, 0, 0): [RIGHT, DOWN, IN],
             (dim, 0, dim): [RIGHT, DOWN, OUT],
             (dim, dim, 0): [RIGHT, UP, IN],

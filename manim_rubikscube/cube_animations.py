@@ -5,6 +5,7 @@ from manim.mobject.types.vectorized_mobject import VGroup
 
 from .cube import RubiksCube
 
+
 class CubeMove(Animation):
     def __init__(self, mobject: RubiksCube, face, **kwargs):
         # This only makes sense when called on a RubiksCube
@@ -30,7 +31,7 @@ class CubeMove(Animation):
 
     def interpolate_mobject(self, alpha):
         self.mobject.become(self.starting_mobject)
-        
+
         VGroup(*self.mobject.get_face(self.face[0])).rotate(
             -self.rate_func(alpha) * (PI / 2) * self.n_turns,
             self.axis,
@@ -45,7 +46,7 @@ class CubeMove(Animation):
 
         # Get to a non-negative value
         n_turns = (n_turns + 4) % 4
-        
+
         cubies = np.rot90(cubies, k=n_turns)
 
         self.mobject.cubies[self.mobject.get_face_slice(self.face[0])] = cubies
