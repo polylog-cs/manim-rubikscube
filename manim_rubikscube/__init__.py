@@ -1,5 +1,4 @@
 from .cube import *
-from .cube_animations import *
 
 try:
     import importlib.metadata as importlib_metadata

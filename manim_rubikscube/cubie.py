@@ -2,14 +2,15 @@ from manim.mobject.types.vectorized_mobject import VGroup
 from manim.constants import *
 from manim.utils.color import *
 from manim.utils.space_ops import z_to_vector
-from manim.mobject.geometry import Square
+from manim.mobject.geometry import Square, RoundedRectangle
 from .cube_utils import get_faces_of_cubie
 
 import numpy as np
 
 
+STROKE_COLOR = "#002b36"  # Solarized Base03
+
 class Cubie(VGroup):
-    position = np.array
 
     def __init__(self, x, y, z, dim, colors, size):
         self.dimensions = dim
@@ -37,7 +38,15 @@ class Cubie(VGroup):
         ).tolist()
         i = 0
         for vect in OUT, DOWN, LEFT, IN, UP, RIGHT:
-            face = Square(side_length=self.size, shade_in_3d=True, stroke_width=3)
+            face = Square(side_length=self.size, shade_in_3d=True, stroke_width=3, stroke_color=STROKE_COLOR)
+            # face = RoundedRectangle(
+            #     height=self.size,
+            #     width=self.size,
+            #     shade_in_3d=True,
+            #     sheen_factor=0.0,
+            #     stroke_width=3,
+            #     corner_radius=0.1,
+            # )
             if vect.tolist() in faces:
                 face.set_fill(self.colors[i], 1)
             else:

@@ -85,3 +85,12 @@ def get_faces_of_cubie(dim, position):
                     return [OUT]
                 else:
                     return []
+
+def parse_move(move):
+    face = move[0]
+    assert face in "FUBLRD"
+    
+    n_turns = 1 if "2" not in face else 2
+    n_turns = -n_turns if "'" in face else n_turns
+
+    return face, n_turns
