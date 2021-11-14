@@ -162,9 +162,11 @@ from .cube import RubiksCube
 
 
 class CubeMove(Animation):
-    def __init__(self, mobject: RubiksCube, face, **kwargs):
+    def __init__(self, mobject: RubiksCube, face, target_position=None, **kwargs):
         # This only makes sense when called on a RubiksCube
         assert isinstance(mobject, RubiksCube)
+
+        self.target_position = target_position if target_position is not None else mobject.get_center()
 
         # Compute the axis of rotation by taking the vector from the cube's center
         # to the middle cubie of the rotated face
@@ -186,6 +188,11 @@ class CubeMove(Animation):
 
     def interpolate_mobject(self, alpha):
         self.mobject.become(self.starting_mobject)
+
+        self.mobject.move_to(
+            self.rate_func(alpha) * self.target_position
+            + (1 - self.rate_func(alpha)) * self.starting_mobject.get_center()
+        )
 
         VGroup(*self.mobject.get_face(self.face[0])).rotate(
             -self.rate_func(alpha) * (PI / 2) * self.n_turns,
