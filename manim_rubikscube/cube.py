@@ -15,7 +15,7 @@ class RubiksCube(VGroup):
     # Each coordinate starts at 0 and goes to (Dimensions - 1)
 
     # Colors are in the order Up, Right, Front, Down, Left, Back
-    def __init__(self, dim=3, colors=None, cubie_size=1.0, rotate_nicely=False):
+    def __init__(self, dim=3, colors=None, cubie_size=1.0, rotate_nicely=True):
         if not (dim >= 2):
             raise Exception("Dimension must be >= 2")
 
