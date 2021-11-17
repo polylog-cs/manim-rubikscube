@@ -128,6 +128,9 @@ class RubiksCube(VGroup):
 
         self.update_indices_after_move(move)
 
+        # For chaining
+        return self
+
     def update_indices_after_move(self, move):
         face, n_turns = parse_move(move)
 
