@@ -1,3 +1,5 @@
+import itertools
+
 from manim.constants import DEGREES, PI
 from manim.utils.color import *
 
@@ -154,6 +156,23 @@ class RubiksCube(VGroup):
             anim_args = {}
         anim = CubeMove(self, move, **anim_args)
         return anim
+
+    def hash(self) -> int:
+        """
+        Returns a deterministic int representation of the cube's configuration (state).
+        """
+        h = 0
+        for i, j, k in itertools.product(range(3), range(3), range(3)):
+            h = hash((self.cubies[i][j][k].hash_id, h))
+        
+        return h
+    
+    def set_stroke_width(self, stroke_width: float):
+        for cubie in self.cubies.reshape(-1):
+            for face in cubie.submobjects:
+                face.stroke_width = stroke_width
+        
+        return self
 
 
 import numpy as np
