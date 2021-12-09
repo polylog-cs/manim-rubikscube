@@ -90,7 +90,13 @@ def parse_move(move):
     face = move[0]
     assert face in "FUBLRD"
     
-    n_turns = 1 if "2" not in move else 2
+    # Try parsing moves like F2 or even F8
+    try:
+        n_turns = int(move[1])
+    except (IndexError, ValueError):
+        # If the string is too short, or move[1] is not a number
+        n_turns = 1
+
     n_turns = -n_turns if "'" in move else n_turns
 
     return face, n_turns
