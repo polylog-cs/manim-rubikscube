@@ -40,8 +40,9 @@ class RubiksCube(VGroup):
         self.rotate(axis=np.array([1, 0, 0]), angle=-PI / 2)
 
         if rotate_nicely:
-            self.rotate(15 * DEGREES, axis=np.array([1, 0, 0]))
-            self.rotate(15 * DEGREES, axis=np.array([0, 1, 0]))
+            self.rotate(-20 * DEGREES, axis=np.array([0, 1, 0]))
+            self.rotate(20 * DEGREES, axis=np.array([1, 0, 0]))
+            
 
     def generate_cubies(self):
         for x in range(self.dimensions):
